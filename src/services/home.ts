@@ -1,5 +1,5 @@
 import { http } from '@/utils/http'
-import type { BannerItem, categoryItem } from '@/types/home'
+import type { BannerItem, categoryItem, hotItem } from '@/types/home'
 /**
  *首页-广告区域-小程序
  * @param distributionSite
@@ -19,10 +19,23 @@ export const getHomeBannerAPI = (distributionSite = 1) => {
     },
   })
 }
-
+/**
+ * 首页-商品分类
+ * @returns
+ */
 export const getHomeCategoryAPI = () => {
   return http<categoryItem[]>({
     method: 'GET',
     url: '/home/category/mutli',
+  })
+}
+/**
+ *
+ * 首页-热门推荐
+ */
+export const getHomeHotAPI = () => {
+  return http<hotItem[]>({
+    method: 'GET',
+    url: '/home/hot/mutli',
   })
 }
