@@ -8,7 +8,7 @@ import { onMounted, ref } from 'vue'
 const finish = ref(false)
 //分页参数
 const pageParams: Required<PageParams> = {
-  page: 30,
+  page: 1,
   pageSize: 10,
 }
 //获取猜你喜欢数据列表
