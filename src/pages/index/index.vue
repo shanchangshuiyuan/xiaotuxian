@@ -9,14 +9,18 @@
     @refresherrefresh="onRefresherRefresh"
     :refresher-triggered="isTriggered"
   >
-    <!-- 轮播图 -->
-    <XtxSwiper :list="bannerList"></XtxSwiper>
-    <!-- 分类面板 -->
-    <CategoryPanel :list="categoryList"></CategoryPanel>
-    <!-- 热门推荐 -->
-    <HotPanel :list="hotList"></HotPanel>
-    <!-- 猜你喜欢 -->
-    <XtxGuess ref="guessRef"></XtxGuess>
+    <!-- 骨架屏 -->
+    <PageSkeleton v-if="isLoading"></PageSkeleton>
+    <template v-else>
+      <!-- 轮播图 -->
+      <XtxSwiper :list="bannerList"></XtxSwiper>
+      <!-- 分类面板 -->
+      <CategoryPanel :list="categoryList"></CategoryPanel>
+      <!-- 热门推荐 -->
+      <HotPanel :list="hotList"></HotPanel>
+      <!-- 猜你喜欢 -->
+      <XtxGuess ref="guessRef"></XtxGuess>
+    </template>
   </scroll-view>
 </template>
 
@@ -27,10 +31,11 @@ import { ref } from 'vue'
 //以Xtx开头的组件可以自动导入，后面在使用就不导入了
 // import XtxSwiper from '@/components/XtxSwiper.vue'
 import type { BannerItem, categoryItem, hotItem } from '@/types/home'
+import type { xtxGuessInstance } from '@/types/component'
 import CustomNavbar from './component/CustomNavbar.vue'
 import CategoryPanel from './component/CategoryPanel.vue'
 import HotPanel from './component/HotPanel.vue'
-import type { xtxGuessInstance } from '@/types/component'
+import PageSkeleton from './component/PageSkeleton.vue'
 
 //轮播图数据获取
 const bannerList = ref<BannerItem[]>([])
@@ -52,14 +57,20 @@ const getHomeHotData = async () => {
   const res = await getHomeHotAPI()
   hotList.value = res.result
 }
+// 判断是否正在加载数据判断是否加载骨架屏
+const isLoading = ref(false)
 
-onLoad(() => {
-  //轮播图数据获取
-  getHomeBannerData()
-  //分类前台数据获取
-  getCategoryData()
-  //热门推荐数据获取
-  getHomeHotData()
+//数据加载
+onLoad(async () => {
+  isLoading.value = true
+  // //轮播图数据获取
+  // getHomeBannerData()
+  // //分类前台数据获取
+  // getCategoryData()
+  // //热门推荐数据获取
+  // getHomeHotData()
+  await Promise.all([getHomeBannerData(), getCategoryData(), getHomeHotData()])
+  isLoading.value = false
 })
 
 //获取猜你喜欢组件实例
