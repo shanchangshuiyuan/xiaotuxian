@@ -1,5 +1,6 @@
 import { http } from '@/utils/http'
-import type { BannerItem, categoryItem, hotItem } from '@/types/home'
+import type { BannerItem, categoryItem, guessItem, hotItem } from '@/types/home'
+import type { PageResult } from '@/types/global'
 /**
  *首页-广告区域-小程序
  * @param distributionSite
@@ -37,5 +38,16 @@ export const getHomeHotAPI = () => {
   return http<hotItem[]>({
     method: 'GET',
     url: '/home/hot/mutli',
+  })
+}
+
+/**
+ * 首页-猜你喜欢
+ * @returns
+ */
+export const getHomeGoodsGuessLikeAPI = () => {
+  return http<PageResult<guessItem>>({
+    method: 'GET',
+    url: '/home/goods/guessLike',
   })
 }

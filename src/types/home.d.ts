@@ -40,3 +40,21 @@ export type hotItem = {
   //推荐类型
   type: string
 }
+
+/**
+ * 首页-猜你喜欢数据类型
+ */
+export type guessItem = {
+  //商品描述
+  desc: string
+  //商品id
+  id: number
+  //商品名称
+  name: string
+  //已下单数量
+  orderNum: number
+  //图片路径
+  picture: string
+  //价格
+  price: number
+}
