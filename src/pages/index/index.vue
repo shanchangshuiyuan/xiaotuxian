@@ -1,7 +1,14 @@
 <template>
   <!-- 自定义导航栏 -->
   <CustomNavbar></CustomNavbar>
-  <scroll-view class="scroll-view" scroll-y @scrolltolower="onScrollToLower">
+  <scroll-view
+    class="scroll-view"
+    scroll-y
+    @scrolltolower="onScrollToLower"
+    refresher-enabled
+    @refresherrefresh="onRefresherRefresh"
+    :refresher-triggered="isTriggered"
+  >
     <!-- 轮播图 -->
     <XtxSwiper :list="bannerList"></XtxSwiper>
     <!-- 分类面板 -->
@@ -58,9 +65,33 @@ onLoad(() => {
 //获取猜你喜欢组件实例
 const guessRef = ref<xtxGuessInstance>()
 
+//页面到底部自动获取数据
 const onScrollToLower = () => {
-  // console.log('出低了')
   guessRef.value?.getMore()
+}
+
+//判断动画是否关闭标志
+const isTriggered = ref(false)
+//下拉刷新
+const onRefresherRefresh = async () => {
+  //开始动画
+  isTriggered.value = true
+  // //轮播图数据获取
+  // getHomeBannerData()
+  // //分类前台数据获取
+  // getCategoryData()
+  // //热门推荐数据获取
+  // getHomeHotData()
+  //重置猜你喜欢组件数据
+  guessRef.value?.resetData()
+  await Promise.all([
+    getHomeBannerData(),
+    getCategoryData(),
+    getHomeHotData(),
+    guessRef.value?.getMore(),
+  ])
+  //关闭动画
+  isTriggered.value = false
 }
 </script>
 

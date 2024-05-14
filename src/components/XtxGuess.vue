@@ -31,6 +31,13 @@ const getHomeGoodsGuessLikeData = async () => {
   }
 }
 
+//猜你喜欢数据重置
+const resetData = () => {
+  finish.value = false
+  pageParams.page = 1
+  guessList.value = []
+}
+
 //组件挂载完毕
 onMounted(() => {
   getHomeGoodsGuessLikeData()
@@ -39,6 +46,7 @@ onMounted(() => {
 // 暴露方法
 defineExpose({
   getMore: getHomeGoodsGuessLikeData,
+  resetData,
 })
 </script>
 
