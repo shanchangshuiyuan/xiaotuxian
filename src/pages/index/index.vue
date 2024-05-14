@@ -1,7 +1,7 @@
 <template>
   <!-- 自定义导航栏 -->
   <CustomNavbar></CustomNavbar>
-  <scroll-view class="scroll-view" scroll-y>
+  <scroll-view class="scroll-view" scroll-y @scrolltolower="onScrollToLower">
     <!-- 轮播图 -->
     <XtxSwiper :list="bannerList"></XtxSwiper>
     <!-- 分类面板 -->
@@ -9,7 +9,7 @@
     <!-- 热门推荐 -->
     <HotPanel :list="hotList"></HotPanel>
     <!-- 猜你喜欢 -->
-    <XtxGuess></XtxGuess>
+    <XtxGuess ref="guessRef"></XtxGuess>
   </scroll-view>
 </template>
 
@@ -23,6 +23,7 @@ import type { BannerItem, categoryItem, hotItem } from '@/types/home'
 import CustomNavbar from './component/CustomNavbar.vue'
 import CategoryPanel from './component/CategoryPanel.vue'
 import HotPanel from './component/HotPanel.vue'
+import type { xtxGuessInstance } from '@/types/component'
 
 //轮播图数据获取
 const bannerList = ref<BannerItem[]>([])
@@ -53,6 +54,14 @@ onLoad(() => {
   //热门推荐数据获取
   getHomeHotData()
 })
+
+//获取猜你喜欢组件实例
+const guessRef = ref<xtxGuessInstance>()
+
+const onScrollToLower = () => {
+  // console.log('出低了')
+  guessRef.value?.getMore()
+}
 </script>
 
 <style lang="scss">
